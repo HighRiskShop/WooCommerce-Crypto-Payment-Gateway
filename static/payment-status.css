@@ -1,0 +1,32 @@
+/* Loader when the class is applied */
+.highriskshopcryptogateway-unpaid::after {
+    content: '';
+    margin-left: 10px;
+    width: 1em;
+    height: 1em;
+    border: 3px solid #000000;
+    border-bottom-color: #FF3D00;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: highriskshoprotation 1s linear infinite;
+    vertical-align: middle;
+}
+
+/* Loader keyframes */
+@keyframes highriskshoprotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.highriskshopcryptogateway-paid::after {
+    content: '\2705';
+    margin-left: 8px;
+    font-size: 1em;
+    vertical-align: middle;
+    display: inline-block;
+}
