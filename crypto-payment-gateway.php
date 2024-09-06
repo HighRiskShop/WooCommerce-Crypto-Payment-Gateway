@@ -40,7 +40,6 @@ add_action('before_woocommerce_init', function() {
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-ethbep20.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-injbep20.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-ltcbep20.php'); // Include the payment gateway class
-		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-maticbep20.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-phptbep20.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-shibbep20.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-thcbep20.php'); // Include the payment gateway class
@@ -75,7 +74,7 @@ add_action('before_woocommerce_init', function() {
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-wbtcarbitrum.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-avaxpolygon.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-manapolygon.php'); // Include the payment gateway class
-		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-maticpolygon.php'); // Include the payment gateway class
+		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-polpolygon.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-smtpolygon.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-usdcpolygon.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-highriskshop-instant-payment-gateway-usdcepolygon.php'); // Include the payment gateway class
