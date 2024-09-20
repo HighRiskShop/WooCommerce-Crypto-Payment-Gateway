@@ -30,3 +30,11 @@
     vertical-align: middle;
     display: inline-block;
 }
+
+.highriskshopcryptogateway-failed::before {
+    content: '\274C';
+    margin-left: 8px;
+    font-size: 1em;
+    vertical-align: middle;
+    display: inline-block;
+}

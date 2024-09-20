@@ -274,7 +274,12 @@ public function before_thankyou_page($order_id) {
 								.removeClass('highriskshopcryptogateway-unpaid')
 								.addClass('<?php echo esc_js(esc_attr('highriskshopcryptogateway-paid')); ?>');
 								$('#highriskshopcryptogateway-wrapper').remove();
-                            } else {
+                            } else if (response.status === 'failed') { 
+							    $('#highriskshop-payment-status-message').text('<?php echo esc_js(__('Payment failed, you may have sent incorrect amount or token. Contact support', 'highriskshop-instant-payment-gateway-ethbep20')); ?>')
+								.removeClass('highriskshopcryptogateway-unpaid')
+								.addClass('<?php echo esc_js(esc_attr('highriskshopcryptogateway-failed')); ?>');
+								$('#highriskshopcryptogateway-wrapper').remove();
+							} else {
                                 $('#highriskshop-payment-status-message').text('<?php echo esc_js(__('Waiting for payment', 'highriskshop-instant-payment-gateway-ethbep20')); ?>');
                             }
                         },
