@@ -81,7 +81,7 @@ class HighRiskShop_Instant_Payment_Gateway_Etharbitrum extends WC_Payment_Gatewa
 		$highriskshopcryptogateway_etharbitrum_status_nonce = wp_create_nonce( 'highriskshopcryptogateway_etharbitrum_status_nonce_' . $highriskshopcryptogateway_etharbitrum_email );
 
 		
-$highriskshopcryptogateway_etharbitrum_response = wp_remote_get('https://api.highriskshop.com/crypto/arbitrum/eth/convert.php?value=' . $highriskshopcryptogateway_etharbitrum_total . '&from=' . strtolower($highriskshopcryptogateway_etharbitrum_currency));
+$highriskshopcryptogateway_etharbitrum_response = wp_remote_get('https://api.highriskshop.com/crypto/arbitrum/eth/convert.php?value=' . $highriskshopcryptogateway_etharbitrum_total . '&from=' . strtolower($highriskshopcryptogateway_etharbitrum_currency), array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_etharbitrum_response)) {
     // Handle error
@@ -106,7 +106,7 @@ if ($highriskshopcryptogateway_etharbitrum_conversion_resp && isset($highrisksho
 			
 			// Get the estimated feed for our crypto coin in USD fiat currency
 			
-		$highriskshopcryptogateway_etharbitrum_feesest_response = wp_remote_get('https://api.highriskshop.com/crypto/arbitrum/eth/fees.php');
+		$highriskshopcryptogateway_etharbitrum_feesest_response = wp_remote_get('https://api.highriskshop.com/crypto/arbitrum/eth/fees.php', array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_etharbitrum_feesest_response)) {
     // Handle error
@@ -129,7 +129,7 @@ if ($highriskshopcryptogateway_etharbitrum_feesest_conversion_resp && isset($hig
 
 // Convert the estimated fee back to our crypto
 
-$highriskshopcryptogateway_etharbitrum_revfeesest_response = wp_remote_get('https://api.highriskshop.com/crypto/arbitrum/eth/convert.php?value=' . $highriskshopcryptogateway_etharbitrum_feesest_reference_total . '&from=usd');
+$highriskshopcryptogateway_etharbitrum_revfeesest_response = wp_remote_get('https://api.highriskshop.com/crypto/arbitrum/eth/convert.php?value=' . $highriskshopcryptogateway_etharbitrum_feesest_reference_total . '&from=usd', array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_etharbitrum_revfeesest_response)) {
     // Handle error
@@ -158,7 +158,7 @@ if ($highriskshopcryptogateway_etharbitrum_revfeesest_conversion_resp && isset($
 
 		}
 		
-$highriskshopcryptogateway_etharbitrum_gen_wallet = wp_remote_get('https://api.highriskshop.com/crypto/arbitrum/eth/wallet.php?address=' . $this->etharbitrum_wallet_address .'&callback=' . urlencode($highriskshopcryptogateway_etharbitrum_callback));
+$highriskshopcryptogateway_etharbitrum_gen_wallet = wp_remote_get('https://api.highriskshop.com/crypto/arbitrum/eth/wallet.php?address=' . $this->etharbitrum_wallet_address .'&callback=' . urlencode($highriskshopcryptogateway_etharbitrum_callback), array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_etharbitrum_gen_wallet)) {
     // Handle error
@@ -175,7 +175,7 @@ if (is_wp_error($highriskshopcryptogateway_etharbitrum_gen_wallet)) {
 		$highriskshopcryptogateway_etharbitrum_gen_callback = sanitize_url($highriskshopcryptogateway_etharbitrum_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
-		$highriskshopcryptogateway_etharbitrum_genqrcode_response = wp_remote_get('https://api.highriskshop.com/crypto/arbitrum/eth/qrcode.php?address=' . $highriskshopcryptogateway_etharbitrum_gen_addressIn);
+		$highriskshopcryptogateway_etharbitrum_genqrcode_response = wp_remote_get('https://api.highriskshop.com/crypto/arbitrum/eth/qrcode.php?address=' . $highriskshopcryptogateway_etharbitrum_gen_addressIn, array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_etharbitrum_genqrcode_response)) {
     // Handle error

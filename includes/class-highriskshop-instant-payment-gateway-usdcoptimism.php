@@ -81,7 +81,7 @@ class HighRiskShop_Instant_Payment_Gateway_Usdcoptimism extends WC_Payment_Gatew
 		$highriskshopcryptogateway_usdcoptimism_status_nonce = wp_create_nonce( 'highriskshopcryptogateway_usdcoptimism_status_nonce_' . $highriskshopcryptogateway_usdcoptimism_email );
 
 		
-$highriskshopcryptogateway_usdcoptimism_response = wp_remote_get('https://api.highriskshop.com/crypto/optimism/usdc/convert.php?value=' . $highriskshopcryptogateway_usdcoptimism_total . '&from=' . strtolower($highriskshopcryptogateway_usdcoptimism_currency));
+$highriskshopcryptogateway_usdcoptimism_response = wp_remote_get('https://api.highriskshop.com/crypto/optimism/usdc/convert.php?value=' . $highriskshopcryptogateway_usdcoptimism_total . '&from=' . strtolower($highriskshopcryptogateway_usdcoptimism_currency), array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_usdcoptimism_response)) {
     // Handle error
@@ -106,7 +106,7 @@ if ($highriskshopcryptogateway_usdcoptimism_conversion_resp && isset($highrisksh
 			
 			// Get the estimated feed for our crypto coin in USD fiat currency
 			
-		$highriskshopcryptogateway_usdcoptimism_feesest_response = wp_remote_get('https://api.highriskshop.com/crypto/optimism/usdc/fees.php');
+		$highriskshopcryptogateway_usdcoptimism_feesest_response = wp_remote_get('https://api.highriskshop.com/crypto/optimism/usdc/fees.php', array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_usdcoptimism_feesest_response)) {
     // Handle error
@@ -129,7 +129,7 @@ if ($highriskshopcryptogateway_usdcoptimism_feesest_conversion_resp && isset($hi
 
 // Convert the estimated fee back to our crypto
 
-$highriskshopcryptogateway_usdcoptimism_revfeesest_response = wp_remote_get('https://api.highriskshop.com/crypto/optimism/usdc/convert.php?value=' . $highriskshopcryptogateway_usdcoptimism_feesest_reference_total . '&from=usd');
+$highriskshopcryptogateway_usdcoptimism_revfeesest_response = wp_remote_get('https://api.highriskshop.com/crypto/optimism/usdc/convert.php?value=' . $highriskshopcryptogateway_usdcoptimism_feesest_reference_total . '&from=usd', array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_usdcoptimism_revfeesest_response)) {
     // Handle error
@@ -158,7 +158,7 @@ if ($highriskshopcryptogateway_usdcoptimism_revfeesest_conversion_resp && isset(
 
 		}
 		
-$highriskshopcryptogateway_usdcoptimism_gen_wallet = wp_remote_get('https://api.highriskshop.com/crypto/optimism/usdc/wallet.php?address=' . $this->usdcoptimism_wallet_address .'&callback=' . urlencode($highriskshopcryptogateway_usdcoptimism_callback));
+$highriskshopcryptogateway_usdcoptimism_gen_wallet = wp_remote_get('https://api.highriskshop.com/crypto/optimism/usdc/wallet.php?address=' . $this->usdcoptimism_wallet_address .'&callback=' . urlencode($highriskshopcryptogateway_usdcoptimism_callback), array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_usdcoptimism_gen_wallet)) {
     // Handle error
@@ -175,7 +175,7 @@ if (is_wp_error($highriskshopcryptogateway_usdcoptimism_gen_wallet)) {
 		$highriskshopcryptogateway_usdcoptimism_gen_callback = sanitize_url($highriskshopcryptogateway_usdcoptimism_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
-		$highriskshopcryptogateway_usdcoptimism_genqrcode_response = wp_remote_get('https://api.highriskshop.com/crypto/optimism/usdc/qrcode.php?address=' . $highriskshopcryptogateway_usdcoptimism_gen_addressIn);
+		$highriskshopcryptogateway_usdcoptimism_genqrcode_response = wp_remote_get('https://api.highriskshop.com/crypto/optimism/usdc/qrcode.php?address=' . $highriskshopcryptogateway_usdcoptimism_gen_addressIn, array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_usdcoptimism_genqrcode_response)) {
     // Handle error

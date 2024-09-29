@@ -81,7 +81,7 @@ class HighRiskShop_Instant_Payment_Gateway_Usdceavaxc extends WC_Payment_Gateway
 		$highriskshopcryptogateway_usdceavaxc_status_nonce = wp_create_nonce( 'highriskshopcryptogateway_usdceavaxc_status_nonce_' . $highriskshopcryptogateway_usdceavaxc_email );
 
 		
-$highriskshopcryptogateway_usdceavaxc_response = wp_remote_get('https://api.highriskshop.com/crypto/avax-c/usdc.e/convert.php?value=' . $highriskshopcryptogateway_usdceavaxc_total . '&from=' . strtolower($highriskshopcryptogateway_usdceavaxc_currency));
+$highriskshopcryptogateway_usdceavaxc_response = wp_remote_get('https://api.highriskshop.com/crypto/avax-c/usdc.e/convert.php?value=' . $highriskshopcryptogateway_usdceavaxc_total . '&from=' . strtolower($highriskshopcryptogateway_usdceavaxc_currency), array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_usdceavaxc_response)) {
     // Handle error
@@ -106,7 +106,7 @@ if ($highriskshopcryptogateway_usdceavaxc_conversion_resp && isset($highriskshop
 			
 			// Get the estimated feed for our crypto coin in USD fiat currency
 			
-		$highriskshopcryptogateway_usdceavaxc_feesest_response = wp_remote_get('https://api.highriskshop.com/crypto/avax-c/usdc.e/fees.php');
+		$highriskshopcryptogateway_usdceavaxc_feesest_response = wp_remote_get('https://api.highriskshop.com/crypto/avax-c/usdc.e/fees.php', array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_usdceavaxc_feesest_response)) {
     // Handle error
@@ -129,7 +129,7 @@ if ($highriskshopcryptogateway_usdceavaxc_feesest_conversion_resp && isset($high
 
 // Convert the estimated fee back to our crypto
 
-$highriskshopcryptogateway_usdceavaxc_revfeesest_response = wp_remote_get('https://api.highriskshop.com/crypto/avax-c/usdc.e/convert.php?value=' . $highriskshopcryptogateway_usdceavaxc_feesest_reference_total . '&from=usd');
+$highriskshopcryptogateway_usdceavaxc_revfeesest_response = wp_remote_get('https://api.highriskshop.com/crypto/avax-c/usdc.e/convert.php?value=' . $highriskshopcryptogateway_usdceavaxc_feesest_reference_total . '&from=usd', array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_usdceavaxc_revfeesest_response)) {
     // Handle error
@@ -158,7 +158,7 @@ if ($highriskshopcryptogateway_usdceavaxc_revfeesest_conversion_resp && isset($h
 
 		}
 		
-$highriskshopcryptogateway_usdceavaxc_gen_wallet = wp_remote_get('https://api.highriskshop.com/crypto/avax-c/usdc.e/wallet.php?address=' . $this->usdceavaxc_wallet_address .'&callback=' . urlencode($highriskshopcryptogateway_usdceavaxc_callback));
+$highriskshopcryptogateway_usdceavaxc_gen_wallet = wp_remote_get('https://api.highriskshop.com/crypto/avax-c/usdc.e/wallet.php?address=' . $this->usdceavaxc_wallet_address .'&callback=' . urlencode($highriskshopcryptogateway_usdceavaxc_callback), array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_usdceavaxc_gen_wallet)) {
     // Handle error
@@ -175,7 +175,7 @@ if (is_wp_error($highriskshopcryptogateway_usdceavaxc_gen_wallet)) {
 		$highriskshopcryptogateway_usdceavaxc_gen_callback = sanitize_url($highriskshopcryptogateway_usdceavaxc_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
-		$highriskshopcryptogateway_usdceavaxc_genqrcode_response = wp_remote_get('https://api.highriskshop.com/crypto/avax-c/usdc.e/qrcode.php?address=' . $highriskshopcryptogateway_usdceavaxc_gen_addressIn);
+		$highriskshopcryptogateway_usdceavaxc_genqrcode_response = wp_remote_get('https://api.highriskshop.com/crypto/avax-c/usdc.e/qrcode.php?address=' . $highriskshopcryptogateway_usdceavaxc_gen_addressIn, array('timeout' => 30));
 
 if (is_wp_error($highriskshopcryptogateway_usdceavaxc_genqrcode_response)) {
     // Handle error
