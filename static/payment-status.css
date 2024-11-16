@@ -1,5 +1,5 @@
 /* Loader when the class is applied */
-.highriskshopcryptogateway-unpaid::after {
+.paygatedottocryptogateway-unpaid::after {
     content: '';
     margin-left: 10px;
     width: 1em;
@@ -9,12 +9,12 @@
     border-radius: 50%;
     display: inline-block;
     box-sizing: border-box;
-    animation: highriskshoprotation 1s linear infinite;
+    animation: paygatedottorotation 1s linear infinite;
     vertical-align: middle;
 }
 
 /* Loader keyframes */
-@keyframes highriskshoprotation {
+@keyframes paygatedottorotation {
     0% {
         transform: rotate(0deg);
     }
@@ -23,7 +23,7 @@
     }
 }
 
-.highriskshopcryptogateway-paid::after {
+.paygatedottocryptogateway-paid::after {
     content: '\2705';
     margin-left: 8px;
     font-size: 1em;
@@ -31,7 +31,7 @@
     display: inline-block;
 }
 
-.highriskshopcryptogateway-failed::before {
+.paygatedottocryptogateway-failed::before {
     content: '\274C';
     margin-left: 8px;
     font-size: 1em;

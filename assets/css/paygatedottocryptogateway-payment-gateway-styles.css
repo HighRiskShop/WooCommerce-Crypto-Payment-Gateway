@@ -1,0 +1,9 @@
+.paygatedottocryptogateway-payment-method-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.paygatedottocryptogateway-payment-method-wrapper img {
+    display: flex;
+    width: 100%;
+}
