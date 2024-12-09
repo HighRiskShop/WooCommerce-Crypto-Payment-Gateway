@@ -259,7 +259,7 @@ public function before_thankyou_page($order_id) {
         . '</h1>';
 
     // QR Code Image
-    echo '<div style="' . esc_attr('text-align:center;max-width:100%;margin:0 auto;') . '"><img style="' . esc_attr('text-align:center;max-width:80%;margin:0 auto;') . '" src="data:image/png;base64,' 
+    echo '<div style="' . esc_attr('text-align:center;max-width:100%;margin:0 auto;') . '"><img class="' . esc_attr('paygatedottoqrcodeimg') . '" style="' . esc_attr('text-align:center;max-width:80%;margin:0 auto;') . '" src="data:image/png;base64,' 
         . esc_attr($paygatedottogateway_crypto_qrcode) . '" alt="' . esc_attr('avax-c/usdc Payment Address') . '"/></div>';
 
     // Payment Instructions
