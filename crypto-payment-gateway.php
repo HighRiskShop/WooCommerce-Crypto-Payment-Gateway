@@ -3,7 +3,7 @@
  * Plugin Name: Crypto Payment Gateway with Instant Payouts
  * Plugin URI: https://paygate.to/crypto-payment-gateway-no-kyc-instant-payouts/
  * Description: Cryptocurrency Payment Gateway with instant payouts to your wallet and without KYC hosted directly on your website.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Requires at least: 5.8
  * Tested up to: 6.7.1
  * WC requires at least: 5.8
@@ -169,4 +169,10 @@ add_action('wp_enqueue_scripts', 'paygatedottocryptogateway_enqueue_styles');
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-paygatedotto-crypto-payment-gateway-usdttrc20.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-paygatedotto-crypto-payment-gateway-trx.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-paygatedotto-crypto-payment-gateway-pyusderc20.php'); // Include the payment gateway class
+		include_once(plugin_dir_path(__FILE__) . 'includes/class-paygatedotto-crypto-payment-gateway-solsol.php'); // Include the payment gateway class
+		include_once(plugin_dir_path(__FILE__) . 'includes/class-paygatedotto-crypto-payment-gateway-usdcsol.php'); // Include the payment gateway class
+		include_once(plugin_dir_path(__FILE__) . 'includes/class-paygatedotto-crypto-payment-gateway-usdtsol.php'); // Include the payment gateway class
+		include_once(plugin_dir_path(__FILE__) . 'includes/class-paygatedotto-crypto-payment-gateway-eurcsol.php'); // Include the payment gateway class
+		include_once(plugin_dir_path(__FILE__) . 'includes/class-paygatedotto-crypto-payment-gateway-wbtcsol.php'); // Include the payment gateway class
+		include_once(plugin_dir_path(__FILE__) . 'includes/class-paygatedotto-crypto-payment-gateway-wethsol.php'); // Include the payment gateway class
 ?>
