@@ -191,6 +191,7 @@ if (is_wp_error($paygatedottocryptogateway_eurcbase_gen_wallet)) {
     if ($paygatedottocryptogateway_eurcbase_wallet_decbody && isset($paygatedottocryptogateway_eurcbase_wallet_decbody['address_in'])) {
 		// Store and sanitize variables
         $paygatedottocryptogateway_eurcbase_gen_addressIn = wp_kses_post($paygatedottocryptogateway_eurcbase_wallet_decbody['address_in']);
+        $paygatedottocryptogateway_eurcbase_gen_ipntoken = wp_kses_post($paygatedottocryptogateway_eurcbase_wallet_decbody['ipn_token']);
 		$paygatedottocryptogateway_eurcbase_gen_callback = sanitize_url($paygatedottocryptogateway_eurcbase_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
@@ -218,6 +219,7 @@ if ($paygatedottocryptogateway_eurcbase_genqrcode_conversion_resp && isset($payg
 		
 		// Save $eurcbaseresponse in order meta data
     $order->add_meta_data('paygatedotto_eurcbase_payin_address', $paygatedottocryptogateway_eurcbase_gen_addressIn, true);
+    $order->add_meta_data('paygatedotto_eurcbase_ipntoken', $paygatedottocryptogateway_eurcbase_gen_ipntoken, true);
     $order->add_meta_data('paygatedotto_eurcbase_callback', $paygatedottocryptogateway_eurcbase_gen_callback, true);
 	$order->add_meta_data('paygatedotto_eurcbase_payin_amount', $paygatedottocryptogateway_eurcbase_payin_total, true);
 	$order->add_meta_data('paygatedotto_eurcbase_qrcode', $paygatedottocryptogateway_eurcbase_genqrcode_pngimg, true);

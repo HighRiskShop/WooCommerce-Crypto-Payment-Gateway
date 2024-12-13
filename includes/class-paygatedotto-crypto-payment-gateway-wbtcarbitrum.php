@@ -191,6 +191,7 @@ if (is_wp_error($paygatedottocryptogateway_wbtcarbitrum_gen_wallet)) {
     if ($paygatedottocryptogateway_wbtcarbitrum_wallet_decbody && isset($paygatedottocryptogateway_wbtcarbitrum_wallet_decbody['address_in'])) {
 		// Store and sanitize variables
         $paygatedottocryptogateway_wbtcarbitrum_gen_addressIn = wp_kses_post($paygatedottocryptogateway_wbtcarbitrum_wallet_decbody['address_in']);
+        $paygatedottocryptogateway_wbtcarbitrum_gen_ipntoken = wp_kses_post($paygatedottocryptogateway_wbtcarbitrum_wallet_decbody['ipn_token']);
 		$paygatedottocryptogateway_wbtcarbitrum_gen_callback = sanitize_url($paygatedottocryptogateway_wbtcarbitrum_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
@@ -218,6 +219,7 @@ if ($paygatedottocryptogateway_wbtcarbitrum_genqrcode_conversion_resp && isset($
 		
 		// Save $wbtcarbitrumresponse in order meta data
     $order->add_meta_data('paygatedotto_wbtcarbitrum_payin_address', $paygatedottocryptogateway_wbtcarbitrum_gen_addressIn, true);
+    $order->add_meta_data('paygatedotto_wbtcarbitrum_ipntoken', $paygatedottocryptogateway_wbtcarbitrum_gen_ipntoken, true);
     $order->add_meta_data('paygatedotto_wbtcarbitrum_callback', $paygatedottocryptogateway_wbtcarbitrum_gen_callback, true);
 	$order->add_meta_data('paygatedotto_wbtcarbitrum_payin_amount', $paygatedottocryptogateway_wbtcarbitrum_payin_total, true);
 	$order->add_meta_data('paygatedotto_wbtcarbitrum_qrcode', $paygatedottocryptogateway_wbtcarbitrum_genqrcode_pngimg, true);

@@ -191,6 +191,7 @@ if (is_wp_error($paygatedottocryptogateway_usdttrc20_gen_wallet)) {
     if ($paygatedottocryptogateway_usdttrc20_wallet_decbody && isset($paygatedottocryptogateway_usdttrc20_wallet_decbody['address_in'])) {
 		// Store and sanitize variables
         $paygatedottocryptogateway_usdttrc20_gen_addressIn = wp_kses_post($paygatedottocryptogateway_usdttrc20_wallet_decbody['address_in']);
+        $paygatedottocryptogateway_usdttrc20_gen_ipntoken = wp_kses_post($paygatedottocryptogateway_usdttrc20_wallet_decbody['ipn_token']);
 		$paygatedottocryptogateway_usdttrc20_gen_callback = sanitize_url($paygatedottocryptogateway_usdttrc20_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
@@ -218,6 +219,7 @@ if ($paygatedottocryptogateway_usdttrc20_genqrcode_conversion_resp && isset($pay
 		
 		// Save $usdttrc20response in order meta data
     $order->add_meta_data('paygatedotto_usdttrc20_payin_address', $paygatedottocryptogateway_usdttrc20_gen_addressIn, true);
+    $order->add_meta_data('paygatedotto_usdttrc20_ipntoken', $paygatedottocryptogateway_usdttrc20_gen_ipntoken, true);
     $order->add_meta_data('paygatedotto_usdttrc20_callback', $paygatedottocryptogateway_usdttrc20_gen_callback, true);
 	$order->add_meta_data('paygatedotto_usdttrc20_payin_amount', $paygatedottocryptogateway_usdttrc20_payin_total, true);
 	$order->add_meta_data('paygatedotto_usdttrc20_qrcode', $paygatedottocryptogateway_usdttrc20_genqrcode_pngimg, true);

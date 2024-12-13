@@ -191,6 +191,7 @@ if (is_wp_error($paygatedottocryptogateway_btc_gen_wallet)) {
     if ($paygatedottocryptogateway_btc_wallet_decbody && isset($paygatedottocryptogateway_btc_wallet_decbody['address_in'])) {
 		// Store and sanitize variables
         $paygatedottocryptogateway_btc_gen_addressIn = wp_kses_post($paygatedottocryptogateway_btc_wallet_decbody['address_in']);
+        $paygatedottocryptogateway_btc_gen_ipntoken = wp_kses_post($paygatedottocryptogateway_btc_wallet_decbody['ipn_token']);
 		$paygatedottocryptogateway_btc_gen_callback = sanitize_url($paygatedottocryptogateway_btc_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
@@ -218,6 +219,7 @@ if ($paygatedottocryptogateway_btc_genqrcode_conversion_resp && isset($paygatedo
 		
 		// Save $btcresponse in order meta data
     $order->add_meta_data('paygatedotto_btc_payin_address', $paygatedottocryptogateway_btc_gen_addressIn, true);
+    $order->add_meta_data('paygatedotto_btc_ipntoken', $paygatedottocryptogateway_btc_gen_ipntoken, true);
     $order->add_meta_data('paygatedotto_btc_callback', $paygatedottocryptogateway_btc_gen_callback, true);
 	$order->add_meta_data('paygatedotto_btc_payin_amount', $paygatedottocryptogateway_btc_payin_total, true);
 	$order->add_meta_data('paygatedotto_btc_qrcode', $paygatedottocryptogateway_btc_genqrcode_pngimg, true);

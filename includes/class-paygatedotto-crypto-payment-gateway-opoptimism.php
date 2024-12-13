@@ -191,6 +191,7 @@ if (is_wp_error($paygatedottocryptogateway_opoptimism_gen_wallet)) {
     if ($paygatedottocryptogateway_opoptimism_wallet_decbody && isset($paygatedottocryptogateway_opoptimism_wallet_decbody['address_in'])) {
 		// Store and sanitize variables
         $paygatedottocryptogateway_opoptimism_gen_addressIn = wp_kses_post($paygatedottocryptogateway_opoptimism_wallet_decbody['address_in']);
+        $paygatedottocryptogateway_opoptimism_gen_ipntoken = wp_kses_post($paygatedottocryptogateway_opoptimism_wallet_decbody['ipn_token']);
 		$paygatedottocryptogateway_opoptimism_gen_callback = sanitize_url($paygatedottocryptogateway_opoptimism_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
@@ -218,6 +219,7 @@ if ($paygatedottocryptogateway_opoptimism_genqrcode_conversion_resp && isset($pa
 		
 		// Save $opoptimismresponse in order meta data
     $order->add_meta_data('paygatedotto_opoptimism_payin_address', $paygatedottocryptogateway_opoptimism_gen_addressIn, true);
+    $order->add_meta_data('paygatedotto_opoptimism_ipntoken', $paygatedottocryptogateway_opoptimism_gen_ipntoken, true);
     $order->add_meta_data('paygatedotto_opoptimism_callback', $paygatedottocryptogateway_opoptimism_gen_callback, true);
 	$order->add_meta_data('paygatedotto_opoptimism_payin_amount', $paygatedottocryptogateway_opoptimism_payin_total, true);
 	$order->add_meta_data('paygatedotto_opoptimism_qrcode', $paygatedottocryptogateway_opoptimism_genqrcode_pngimg, true);

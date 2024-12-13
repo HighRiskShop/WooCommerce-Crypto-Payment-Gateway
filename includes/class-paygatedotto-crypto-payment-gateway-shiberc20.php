@@ -191,6 +191,7 @@ if (is_wp_error($paygatedottocryptogateway_shiberc20_gen_wallet)) {
     if ($paygatedottocryptogateway_shiberc20_wallet_decbody && isset($paygatedottocryptogateway_shiberc20_wallet_decbody['address_in'])) {
 		// Store and sanitize variables
         $paygatedottocryptogateway_shiberc20_gen_addressIn = wp_kses_post($paygatedottocryptogateway_shiberc20_wallet_decbody['address_in']);
+        $paygatedottocryptogateway_shiberc20_gen_ipntoken = wp_kses_post($paygatedottocryptogateway_shiberc20_wallet_decbody['ipn_token']);
 		$paygatedottocryptogateway_shiberc20_gen_callback = sanitize_url($paygatedottocryptogateway_shiberc20_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
@@ -218,6 +219,7 @@ if ($paygatedottocryptogateway_shiberc20_genqrcode_conversion_resp && isset($pay
 		
 		// Save $shiberc20response in order meta data
     $order->add_meta_data('paygatedotto_shiberc20_payin_address', $paygatedottocryptogateway_shiberc20_gen_addressIn, true);
+    $order->add_meta_data('paygatedotto_shiberc20_ipntoken', $paygatedottocryptogateway_shiberc20_gen_ipntoken, true);
     $order->add_meta_data('paygatedotto_shiberc20_callback', $paygatedottocryptogateway_shiberc20_gen_callback, true);
 	$order->add_meta_data('paygatedotto_shiberc20_payin_amount', $paygatedottocryptogateway_shiberc20_payin_total, true);
 	$order->add_meta_data('paygatedotto_shiberc20_qrcode', $paygatedottocryptogateway_shiberc20_genqrcode_pngimg, true);

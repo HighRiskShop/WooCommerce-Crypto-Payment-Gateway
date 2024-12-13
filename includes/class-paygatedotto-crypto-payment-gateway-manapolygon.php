@@ -191,6 +191,7 @@ if (is_wp_error($paygatedottocryptogateway_manapolygon_gen_wallet)) {
     if ($paygatedottocryptogateway_manapolygon_wallet_decbody && isset($paygatedottocryptogateway_manapolygon_wallet_decbody['address_in'])) {
 		// Store and sanitize variables
         $paygatedottocryptogateway_manapolygon_gen_addressIn = wp_kses_post($paygatedottocryptogateway_manapolygon_wallet_decbody['address_in']);
+        $paygatedottocryptogateway_manapolygon_gen_ipntoken = wp_kses_post($paygatedottocryptogateway_manapolygon_wallet_decbody['ipn_token']);
 		$paygatedottocryptogateway_manapolygon_gen_callback = sanitize_url($paygatedottocryptogateway_manapolygon_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
@@ -218,6 +219,7 @@ if ($paygatedottocryptogateway_manapolygon_genqrcode_conversion_resp && isset($p
 		
 		// Save $manapolygonresponse in order meta data
     $order->add_meta_data('paygatedotto_manapolygon_payin_address', $paygatedottocryptogateway_manapolygon_gen_addressIn, true);
+    $order->add_meta_data('paygatedotto_manapolygon_ipntoken', $paygatedottocryptogateway_manapolygon_gen_ipntoken, true);
     $order->add_meta_data('paygatedotto_manapolygon_callback', $paygatedottocryptogateway_manapolygon_gen_callback, true);
 	$order->add_meta_data('paygatedotto_manapolygon_payin_amount', $paygatedottocryptogateway_manapolygon_payin_total, true);
 	$order->add_meta_data('paygatedotto_manapolygon_qrcode', $paygatedottocryptogateway_manapolygon_genqrcode_pngimg, true);

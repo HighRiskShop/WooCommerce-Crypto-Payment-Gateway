@@ -191,6 +191,7 @@ if (is_wp_error($paygatedottocryptogateway_daiarbitrum_gen_wallet)) {
     if ($paygatedottocryptogateway_daiarbitrum_wallet_decbody && isset($paygatedottocryptogateway_daiarbitrum_wallet_decbody['address_in'])) {
 		// Store and sanitize variables
         $paygatedottocryptogateway_daiarbitrum_gen_addressIn = wp_kses_post($paygatedottocryptogateway_daiarbitrum_wallet_decbody['address_in']);
+        $paygatedottocryptogateway_daiarbitrum_gen_ipntoken = wp_kses_post($paygatedottocryptogateway_daiarbitrum_wallet_decbody['ipn_token']);
 		$paygatedottocryptogateway_daiarbitrum_gen_callback = sanitize_url($paygatedottocryptogateway_daiarbitrum_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
@@ -218,6 +219,7 @@ if ($paygatedottocryptogateway_daiarbitrum_genqrcode_conversion_resp && isset($p
 		
 		// Save $daiarbitrumresponse in order meta data
     $order->add_meta_data('paygatedotto_daiarbitrum_payin_address', $paygatedottocryptogateway_daiarbitrum_gen_addressIn, true);
+    $order->add_meta_data('paygatedotto_daiarbitrum_ipntoken', $paygatedottocryptogateway_daiarbitrum_gen_ipntoken, true);
     $order->add_meta_data('paygatedotto_daiarbitrum_callback', $paygatedottocryptogateway_daiarbitrum_gen_callback, true);
 	$order->add_meta_data('paygatedotto_daiarbitrum_payin_amount', $paygatedottocryptogateway_daiarbitrum_payin_total, true);
 	$order->add_meta_data('paygatedotto_daiarbitrum_qrcode', $paygatedottocryptogateway_daiarbitrum_genqrcode_pngimg, true);

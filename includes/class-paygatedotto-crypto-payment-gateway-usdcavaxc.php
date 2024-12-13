@@ -191,6 +191,7 @@ if (is_wp_error($paygatedottocryptogateway_usdcavaxc_gen_wallet)) {
     if ($paygatedottocryptogateway_usdcavaxc_wallet_decbody && isset($paygatedottocryptogateway_usdcavaxc_wallet_decbody['address_in'])) {
 		// Store and sanitize variables
         $paygatedottocryptogateway_usdcavaxc_gen_addressIn = wp_kses_post($paygatedottocryptogateway_usdcavaxc_wallet_decbody['address_in']);
+        $paygatedottocryptogateway_usdcavaxc_gen_ipntoken = wp_kses_post($paygatedottocryptogateway_usdcavaxc_wallet_decbody['ipn_token']);
 		$paygatedottocryptogateway_usdcavaxc_gen_callback = sanitize_url($paygatedottocryptogateway_usdcavaxc_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
@@ -218,6 +219,7 @@ if ($paygatedottocryptogateway_usdcavaxc_genqrcode_conversion_resp && isset($pay
 		
 		// Save $usdcavaxcresponse in order meta data
     $order->add_meta_data('paygatedotto_usdcavaxc_payin_address', $paygatedottocryptogateway_usdcavaxc_gen_addressIn, true);
+    $order->add_meta_data('paygatedotto_usdcavaxc_ipntoken', $paygatedottocryptogateway_usdcavaxc_gen_ipntoken, true);
     $order->add_meta_data('paygatedotto_usdcavaxc_callback', $paygatedottocryptogateway_usdcavaxc_gen_callback, true);
 	$order->add_meta_data('paygatedotto_usdcavaxc_payin_amount', $paygatedottocryptogateway_usdcavaxc_payin_total, true);
 	$order->add_meta_data('paygatedotto_usdcavaxc_qrcode', $paygatedottocryptogateway_usdcavaxc_genqrcode_pngimg, true);

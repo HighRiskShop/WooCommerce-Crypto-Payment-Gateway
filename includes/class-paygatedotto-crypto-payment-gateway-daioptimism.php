@@ -191,6 +191,7 @@ if (is_wp_error($paygatedottocryptogateway_daioptimism_gen_wallet)) {
     if ($paygatedottocryptogateway_daioptimism_wallet_decbody && isset($paygatedottocryptogateway_daioptimism_wallet_decbody['address_in'])) {
 		// Store and sanitize variables
         $paygatedottocryptogateway_daioptimism_gen_addressIn = wp_kses_post($paygatedottocryptogateway_daioptimism_wallet_decbody['address_in']);
+        $paygatedottocryptogateway_daioptimism_gen_ipntoken = wp_kses_post($paygatedottocryptogateway_daioptimism_wallet_decbody['ipn_token']);
 		$paygatedottocryptogateway_daioptimism_gen_callback = sanitize_url($paygatedottocryptogateway_daioptimism_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
@@ -218,6 +219,7 @@ if ($paygatedottocryptogateway_daioptimism_genqrcode_conversion_resp && isset($p
 		
 		// Save $daioptimismresponse in order meta data
     $order->add_meta_data('paygatedotto_daioptimism_payin_address', $paygatedottocryptogateway_daioptimism_gen_addressIn, true);
+    $order->add_meta_data('paygatedotto_daioptimism_ipntoken', $paygatedottocryptogateway_daioptimism_gen_ipntoken, true);
     $order->add_meta_data('paygatedotto_daioptimism_callback', $paygatedottocryptogateway_daioptimism_gen_callback, true);
 	$order->add_meta_data('paygatedotto_daioptimism_payin_amount', $paygatedottocryptogateway_daioptimism_payin_total, true);
 	$order->add_meta_data('paygatedotto_daioptimism_qrcode', $paygatedottocryptogateway_daioptimism_genqrcode_pngimg, true);

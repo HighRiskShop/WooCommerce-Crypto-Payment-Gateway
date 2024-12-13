@@ -191,6 +191,7 @@ if (is_wp_error($paygatedottocryptogateway_solsol_gen_wallet)) {
     if ($paygatedottocryptogateway_solsol_wallet_decbody && isset($paygatedottocryptogateway_solsol_wallet_decbody['address_in'])) {
 		// Store and sanitize variables
         $paygatedottocryptogateway_solsol_gen_addressIn = wp_kses_post($paygatedottocryptogateway_solsol_wallet_decbody['address_in']);
+        $paygatedottocryptogateway_solsol_gen_ipntoken = wp_kses_post($paygatedottocryptogateway_solsol_wallet_decbody['ipn_token']);
 		$paygatedottocryptogateway_solsol_gen_callback = sanitize_url($paygatedottocryptogateway_solsol_wallet_decbody['callback_url']);
         
 		// Generate QR code Image
@@ -218,6 +219,7 @@ if ($paygatedottocryptogateway_solsol_genqrcode_conversion_resp && isset($paygat
 		
 		// Save $solsolresponse in order meta data
     $order->add_meta_data('paygatedotto_solsol_payin_address', $paygatedottocryptogateway_solsol_gen_addressIn, true);
+    $order->add_meta_data('paygatedotto_solsol_ipntoken', $paygatedottocryptogateway_solsol_gen_ipntoken, true);
     $order->add_meta_data('paygatedotto_solsol_callback', $paygatedottocryptogateway_solsol_gen_callback, true);
 	$order->add_meta_data('paygatedotto_solsol_payin_amount', $paygatedottocryptogateway_solsol_payin_total, true);
 	$order->add_meta_data('paygatedotto_solsol_qrcode', $paygatedottocryptogateway_solsol_genqrcode_pngimg, true);
