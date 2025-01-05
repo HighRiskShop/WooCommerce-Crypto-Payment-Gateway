@@ -9,7 +9,7 @@ Cryptocurrency Payment Gateway with instant payouts to your wallet and without K
 * QR code shown on your own site for easy customer payments.
 * Automatic payment detection.
 * If the customer made a mistake sending to the wrong token or sending through the wrong network our system will still forward the crypto to you automatically for all supported tokens across all chains.
-* 2% flat rate fee + blockchain fees. Higher volumes can get better rates as low as 1.25%.
+* 1.5% flat rate fee + blockchain fees.
 * Automatic order processing (order will be marked as paid automatically after payment).
 * Track TXID and payouts from wp-admin
 * You can accept payments worldwide without restrictions due to the decentralized nature of how cryptocurrencies work.

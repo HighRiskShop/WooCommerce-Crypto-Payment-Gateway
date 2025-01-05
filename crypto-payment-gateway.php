@@ -3,11 +3,11 @@
  * Plugin Name: Crypto Payment Gateway with Instant Payouts
  * Plugin URI: https://paygate.to/crypto-payment-gateway-no-kyc-instant-payouts/
  * Description: Cryptocurrency Payment Gateway with instant payouts to your wallet and without KYC hosted directly on your website.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Requires at least: 5.8
  * Tested up to: 6.7.1
  * WC requires at least: 5.8
- * WC tested up to: 9.4.3
+ * WC tested up to: 9.5.1
  * Requires PHP: 7.2
  * Author: PayGate.to
  * Author URI: https://paygate.to/
@@ -42,7 +42,7 @@ function paygatedottocryptogateway_enqueue_block_assets() {
 
     foreach ($paygatedottocryptogateway_available_gateways as $gateway_id => $gateway) {
 		if (strpos($gateway_id, 'paygatedotto-crypto-payment-gateway') === 0) {
-        $icon_url = !empty($gateway->icon) ? esc_url($gateway->icon) : '';
+        $icon_url = method_exists($gateway, 'paygatedotto_crypto_payment_gateway_get_icon_url') ? $gateway->paygatedotto_crypto_payment_gateway_get_icon_url() : '';
         $paygatedottocryptogateway_gateways_data[] = array(
             'id' => sanitize_key($gateway_id),
             'label' => sanitize_text_field($gateway->get_title()),
@@ -175,4 +175,23 @@ add_action('wp_enqueue_scripts', 'paygatedottocryptogateway_enqueue_styles');
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-paygatedotto-crypto-payment-gateway-eurcsol.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-paygatedotto-crypto-payment-gateway-wbtcsol.php'); // Include the payment gateway class
 		include_once(plugin_dir_path(__FILE__) . 'includes/class-paygatedotto-crypto-payment-gateway-wethsol.php'); // Include the payment gateway class
+
+	// Conditional function that check if Checkout page use Checkout Blocks
+function paygatedottocryptogateway_is_checkout_block() {
+    return WC_Blocks_Utils::has_block_in_page( wc_get_page_id('checkout'), 'woocommerce/checkout' );
+}
+
+function paygatedottocryptogateway_add_notice($paygatedottocryptogateway_message, $paygatedottocryptogateway_notice_type = 'error') {
+    // Check if the Checkout page is using Checkout Blocks
+    if (paygatedottocryptogateway_is_checkout_block()) {
+        // For blocks, throw a WooCommerce exception
+        if ($paygatedottocryptogateway_notice_type === 'error') {
+            throw new \WC_Data_Exception('checkout_error', esc_html($paygatedottocryptogateway_message)); 
+        }
+        // Handle other notice types if needed
+    } else {
+        // Default WooCommerce behavior
+        wc_add_notice(esc_html($paygatedottocryptogateway_message), $paygatedottocryptogateway_notice_type); 
+    }
+}		
 ?>

@@ -10,7 +10,11 @@ function init_paygatedottocryptogateway_opoptimism_gateway() {
         return;
     }
 
-class HighRiskShop_Crypto_Payment_Gateway_Opoptimism extends WC_Payment_Gateway {
+class PayGateDotTo_Crypto_Payment_Gateway_Opoptimism extends WC_Payment_Gateway {
+
+protected $opoptimism_wallet_address;
+protected $opoptimism_blockchain_fees;
+protected $icon_url;
 
     public function __construct() {
         $this->id                 = 'paygatedotto-crypto-payment-gateway-opoptimism';
@@ -104,7 +108,7 @@ $paygatedottocryptogateway_opoptimism_response = wp_remote_get('https://api.payg
 
 if (is_wp_error($paygatedottocryptogateway_opoptimism_response)) {
     // Handle error
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed currency conversion process, please try again', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed currency conversion process, please try again', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 
@@ -116,7 +120,7 @@ if ($paygatedottocryptogateway_opoptimism_conversion_resp && isset($paygatedotto
     $paygatedottocryptogateway_opoptimism_final_total	= sanitize_text_field($paygatedottocryptogateway_opoptimism_conversion_resp['value_coin']);
     $paygatedottocryptogateway_opoptimism_reference_total = (float)$paygatedottocryptogateway_opoptimism_final_total;	
 } else {
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (unsupported store currency)', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (unsupported store currency)', 'crypto-payment-gateway'), 'error');
     return null;
 }	
 		}
@@ -129,7 +133,7 @@ if ($paygatedottocryptogateway_opoptimism_conversion_resp && isset($paygatedotto
 
 if (is_wp_error($paygatedottocryptogateway_opoptimism_feesest_response)) {
     // Handle error
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Failed to get estimated fees, please try again', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Failed to get estimated fees, please try again', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 
@@ -141,7 +145,7 @@ if ($paygatedottocryptogateway_opoptimism_feesest_conversion_resp && isset($payg
     $paygatedottocryptogateway_opoptimism_feesest_final_total = sanitize_text_field($paygatedottocryptogateway_opoptimism_feesest_conversion_resp['estimated_cost_currency']['USD']);
     $paygatedottocryptogateway_opoptimism_feesest_reference_total = (float)$paygatedottocryptogateway_opoptimism_feesest_final_total;	
 } else {
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Failed to get estimated fees, please try again', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Failed to get estimated fees, please try again', 'crypto-payment-gateway'), 'error');
     return null;
 }	
 		}
@@ -152,7 +156,7 @@ $paygatedottocryptogateway_opoptimism_revfeesest_response = wp_remote_get('https
 
 if (is_wp_error($paygatedottocryptogateway_opoptimism_revfeesest_response)) {
     // Handle error
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed currency conversion process, please try again', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed currency conversion process, please try again', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 
@@ -166,7 +170,7 @@ if ($paygatedottocryptogateway_opoptimism_revfeesest_conversion_resp && isset($p
 	// Calculating order total after adding the blockchain fees
 	$paygatedottocryptogateway_opoptimism_payin_total = $paygatedottocryptogateway_opoptimism_reference_total + $paygatedottocryptogateway_opoptimism_revfeesest_reference_total;
 } else {
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (unsupported store currency)', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (unsupported store currency)', 'crypto-payment-gateway'), 'error');
     return null;
 }	
 		}
@@ -177,11 +181,29 @@ if ($paygatedottocryptogateway_opoptimism_revfeesest_conversion_resp && isset($p
 
 		}
 		
+$paygatedottocryptogateway_opoptimism_response_minimum = wp_remote_get('https://api.paygate.to/crypto/optimism/op/info.php', array('timeout' => 30));
+if (is_wp_error($paygatedottocryptogateway_opoptimism_response_minimum)) {
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed minimum retrieval process, please try again', 'crypto-payment-gateway'), 'error');
+    return null;
+} else {
+    $paygatedottocryptogateway_opoptimism_body_minimum = wp_remote_retrieve_body($paygatedottocryptogateway_opoptimism_response_minimum);
+    $paygatedottocryptogateway_opoptimism_conversion_resp_minimum = json_decode($paygatedottocryptogateway_opoptimism_body_minimum, true);
+    if ($paygatedottocryptogateway_opoptimism_conversion_resp_minimum && isset($paygatedottocryptogateway_opoptimism_conversion_resp_minimum['minimum'])) {
+        $paygatedottocryptogateway_opoptimism_final_minimum = sanitize_text_field($paygatedottocryptogateway_opoptimism_conversion_resp_minimum['minimum']);
+        if ($paygatedottocryptogateway_opoptimism_payin_total < $paygatedottocryptogateway_opoptimism_final_minimum) {
+            paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed because the coin amount is below the minimum required', 'crypto-payment-gateway'), 'error');
+            return null;
+        }
+    } else {
+        paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (failed to fetch minimum coin amount)', 'crypto-payment-gateway'), 'error');
+        return null;
+    }
+}
 $paygatedottocryptogateway_opoptimism_gen_wallet = wp_remote_get('https://api.paygate.to/crypto/optimism/op/wallet.php?address=' . $this->opoptimism_wallet_address .'&callback=' . urlencode($paygatedottocryptogateway_opoptimism_callback), array('timeout' => 30));
 
 if (is_wp_error($paygatedottocryptogateway_opoptimism_gen_wallet)) {
     // Handle error
-    wc_add_notice(__('Wallet error:', 'crypto-payment-gateway') . __('Payment could not be processed due to incorrect payout wallet settings, please contact website admin', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Wallet error:', 'crypto-payment-gateway') . __('Payment could not be processed due to incorrect payout wallet settings, please contact website admin', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 	$paygatedottocryptogateway_opoptimism_wallet_body = wp_remote_retrieve_body($paygatedottocryptogateway_opoptimism_gen_wallet);
@@ -199,7 +221,7 @@ if (is_wp_error($paygatedottocryptogateway_opoptimism_gen_wallet)) {
 
 if (is_wp_error($paygatedottocryptogateway_opoptimism_genqrcode_response)) {
     // Handle error
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Unable to generate QR code', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Unable to generate QR code', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 
@@ -211,7 +233,7 @@ if ($paygatedottocryptogateway_opoptimism_genqrcode_conversion_resp && isset($pa
     $paygatedottocryptogateway_opoptimism_genqrcode_pngimg = wp_kses_post($paygatedottocryptogateway_opoptimism_genqrcode_conversion_resp['qr_code']);	
 	
 } else {
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Unable to generate QR code', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Unable to generate QR code', 'crypto-payment-gateway'), 'error');
     return null;
 }	
 		}
@@ -227,7 +249,7 @@ if ($paygatedottocryptogateway_opoptimism_genqrcode_conversion_resp && isset($pa
 	$order->add_meta_data('paygatedotto_opoptimism_status_nonce', $paygatedottocryptogateway_opoptimism_status_nonce, true);
     $order->save();
     } else {
-        wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (wallet address error)', 'crypto-payment-gateway'), 'error');
+        paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (wallet address error)', 'crypto-payment-gateway'), 'error');
 
         return null;
     }
@@ -286,10 +308,13 @@ public function before_thankyou_page($order_id) {
 
 
 
+public function paygatedotto_crypto_payment_gateway_get_icon_url() {
+        return !empty($this->icon) ? esc_url($this->icon) : '';
+    }
 }
 
 function paygatedotto_add_instant_payment_gateway_opoptimism($gateways) {
-    $gateways[] = 'HighRiskShop_Crypto_Payment_Gateway_Opoptimism';
+    $gateways[] = 'PayGateDotTo_Crypto_Payment_Gateway_Opoptimism';
     return $gateways;
 }
 add_filter('woocommerce_payment_gateways', 'paygatedotto_add_instant_payment_gateway_opoptimism');
@@ -371,7 +396,7 @@ function paygatedottocryptogateway_opoptimism_change_order_status_callback( $req
 		
 		// Get the expected amount and coin
 	$paygatedottocryptogateway_opoptimismexpected_amount = $order->get_meta('paygatedotto_opoptimism_payin_amount', true);
-	$paygatedottocryptogateway_opoptimismexpected_coin = $order->get_meta('paygatedotto_opoptimism_payin_amount', true);
+
 	
 		if ( $paygatedottocryptogateway_opoptimismpaid_value_coin < $paygatedottocryptogateway_opoptimismexpected_amount || $paygatedottocryptogateway_opoptimism_paid_coin_name !== 'optimism_op') {
 			// Mark the order as failed and add an order note

@@ -10,7 +10,11 @@ function init_paygatedottocryptogateway_solsol_gateway() {
         return;
     }
 
-class HighRiskShop_Crypto_Payment_Gateway_Solsol extends WC_Payment_Gateway {
+class PayGateDotTo_Crypto_Payment_Gateway_Solsol extends WC_Payment_Gateway {
+
+protected $solsol_wallet_address;
+protected $solsol_blockchain_fees;
+protected $icon_url;
 
     public function __construct() {
         $this->id                 = 'paygatedotto-crypto-payment-gateway-solsol';
@@ -104,7 +108,7 @@ $paygatedottocryptogateway_solsol_response = wp_remote_get('https://api.paygate.
 
 if (is_wp_error($paygatedottocryptogateway_solsol_response)) {
     // Handle error
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed currency conversion process, please try again', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed currency conversion process, please try again', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 
@@ -116,7 +120,7 @@ if ($paygatedottocryptogateway_solsol_conversion_resp && isset($paygatedottocryp
     $paygatedottocryptogateway_solsol_final_total	= sanitize_text_field($paygatedottocryptogateway_solsol_conversion_resp['value_coin']);
     $paygatedottocryptogateway_solsol_reference_total = (float)$paygatedottocryptogateway_solsol_final_total;	
 } else {
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (unsupported store currency)', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (unsupported store currency)', 'crypto-payment-gateway'), 'error');
     return null;
 }	
 		}
@@ -129,7 +133,7 @@ if ($paygatedottocryptogateway_solsol_conversion_resp && isset($paygatedottocryp
 
 if (is_wp_error($paygatedottocryptogateway_solsol_feesest_response)) {
     // Handle error
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Failed to get estimated fees, please try again', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Failed to get estimated fees, please try again', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 
@@ -141,7 +145,7 @@ if ($paygatedottocryptogateway_solsol_feesest_conversion_resp && isset($paygated
     $paygatedottocryptogateway_solsol_feesest_final_total = sanitize_text_field($paygatedottocryptogateway_solsol_feesest_conversion_resp['estimated_cost_currency']['USD']);
     $paygatedottocryptogateway_solsol_feesest_reference_total = (float)$paygatedottocryptogateway_solsol_feesest_final_total;	
 } else {
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Failed to get estimated fees, please try again', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Failed to get estimated fees, please try again', 'crypto-payment-gateway'), 'error');
     return null;
 }	
 		}
@@ -152,7 +156,7 @@ $paygatedottocryptogateway_solsol_revfeesest_response = wp_remote_get('https://a
 
 if (is_wp_error($paygatedottocryptogateway_solsol_revfeesest_response)) {
     // Handle error
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed currency conversion process, please try again', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed currency conversion process, please try again', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 
@@ -166,7 +170,7 @@ if ($paygatedottocryptogateway_solsol_revfeesest_conversion_resp && isset($payga
 	// Calculating order total after adding the blockchain fees
 	$paygatedottocryptogateway_solsol_payin_total = $paygatedottocryptogateway_solsol_reference_total + $paygatedottocryptogateway_solsol_revfeesest_reference_total;
 } else {
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (unsupported store currency)', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (unsupported store currency)', 'crypto-payment-gateway'), 'error');
     return null;
 }	
 		}
@@ -177,11 +181,29 @@ if ($paygatedottocryptogateway_solsol_revfeesest_conversion_resp && isset($payga
 
 		}
 		
+$paygatedottocryptogateway_solsol_response_minimum = wp_remote_get('https://api.paygate.to/crypto/sol/sol/info.php', array('timeout' => 30));
+if (is_wp_error($paygatedottocryptogateway_solsol_response_minimum)) {
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed minimum retrieval process, please try again', 'crypto-payment-gateway'), 'error');
+    return null;
+} else {
+    $paygatedottocryptogateway_solsol_body_minimum = wp_remote_retrieve_body($paygatedottocryptogateway_solsol_response_minimum);
+    $paygatedottocryptogateway_solsol_conversion_resp_minimum = json_decode($paygatedottocryptogateway_solsol_body_minimum, true);
+    if ($paygatedottocryptogateway_solsol_conversion_resp_minimum && isset($paygatedottocryptogateway_solsol_conversion_resp_minimum['minimum'])) {
+        $paygatedottocryptogateway_solsol_final_minimum = sanitize_text_field($paygatedottocryptogateway_solsol_conversion_resp_minimum['minimum']);
+        if ($paygatedottocryptogateway_solsol_payin_total < $paygatedottocryptogateway_solsol_final_minimum) {
+            paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed because the coin amount is below the minimum required', 'crypto-payment-gateway'), 'error');
+            return null;
+        }
+    } else {
+        paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (failed to fetch minimum coin amount)', 'crypto-payment-gateway'), 'error');
+        return null;
+    }
+}
 $paygatedottocryptogateway_solsol_gen_wallet = wp_remote_get('https://api.paygate.to/crypto/sol/sol/wallet.php?address=' . $this->solsol_wallet_address .'&callback=' . urlencode($paygatedottocryptogateway_solsol_callback), array('timeout' => 30));
 
 if (is_wp_error($paygatedottocryptogateway_solsol_gen_wallet)) {
     // Handle error
-    wc_add_notice(__('Wallet error:', 'crypto-payment-gateway') . __('Payment could not be processed due to incorrect payout wallet settings, please contact website admin', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Wallet error:', 'crypto-payment-gateway') . __('Payment could not be processed due to incorrect payout wallet settings, please contact website admin', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 	$paygatedottocryptogateway_solsol_wallet_body = wp_remote_retrieve_body($paygatedottocryptogateway_solsol_gen_wallet);
@@ -199,7 +221,7 @@ if (is_wp_error($paygatedottocryptogateway_solsol_gen_wallet)) {
 
 if (is_wp_error($paygatedottocryptogateway_solsol_genqrcode_response)) {
     // Handle error
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Unable to generate QR code', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Unable to generate QR code', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 
@@ -211,7 +233,7 @@ if ($paygatedottocryptogateway_solsol_genqrcode_conversion_resp && isset($paygat
     $paygatedottocryptogateway_solsol_genqrcode_pngimg = wp_kses_post($paygatedottocryptogateway_solsol_genqrcode_conversion_resp['qr_code']);	
 	
 } else {
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Unable to generate QR code', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Unable to generate QR code', 'crypto-payment-gateway'), 'error');
     return null;
 }	
 		}
@@ -227,7 +249,7 @@ if ($paygatedottocryptogateway_solsol_genqrcode_conversion_resp && isset($paygat
 	$order->add_meta_data('paygatedotto_solsol_status_nonce', $paygatedottocryptogateway_solsol_status_nonce, true);
     $order->save();
     } else {
-        wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (wallet address error)', 'crypto-payment-gateway'), 'error');
+        paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (wallet address error)', 'crypto-payment-gateway'), 'error');
 
         return null;
     }
@@ -286,10 +308,13 @@ public function before_thankyou_page($order_id) {
 
 
 
+public function paygatedotto_crypto_payment_gateway_get_icon_url() {
+        return !empty($this->icon) ? esc_url($this->icon) : '';
+    }
 }
 
 function paygatedotto_add_instant_payment_gateway_solsol($gateways) {
-    $gateways[] = 'HighRiskShop_Crypto_Payment_Gateway_Solsol';
+    $gateways[] = 'PayGateDotTo_Crypto_Payment_Gateway_Solsol';
     return $gateways;
 }
 add_filter('woocommerce_payment_gateways', 'paygatedotto_add_instant_payment_gateway_solsol');
@@ -371,7 +396,7 @@ function paygatedottocryptogateway_solsol_change_order_status_callback( $request
 		
 		// Get the expected amount and coin
 	$paygatedottocryptogateway_solsolexpected_amount = $order->get_meta('paygatedotto_solsol_payin_amount', true);
-	$paygatedottocryptogateway_solsolexpected_coin = $order->get_meta('paygatedotto_solsol_payin_amount', true);
+
 	
 		if ( $paygatedottocryptogateway_solsolpaid_value_coin < $paygatedottocryptogateway_solsolexpected_amount || $paygatedottocryptogateway_solsol_paid_coin_name !== 'sol_sol') {
 			// Mark the order as failed and add an order note

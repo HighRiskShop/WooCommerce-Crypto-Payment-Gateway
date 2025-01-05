@@ -4,10 +4,10 @@ Donate link: https://paygate.to/
 Tags: woocommerce,payment,crypto,gateway
 Requires at least: 5.8
 Tested up to: 6.7.1
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 Requires PHP: 7.2
 WC requires at least: 5.8
-WC tested up to: 9.4.3
+WC tested up to: 9.5.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -26,13 +26,14 @@ Accept crypto payments directly on your WooCommerce website, each order is assig
 * QR code shown on your own site for easy customer payments.
 * Automatic payment detection.
 * If the customer made a mistake sending to the wrong token or sending through the wrong network our system will still forward the crypto to you automatically for all supported tokens across all chains.
-* 2% flat rate fee + blockchain fees. Higher volumes can get better rates as low as 1.25%.
+* 1.5% flat rate fee + blockchain fees.
 * Automatic order processing (order will be marked as paid automatically after payment).
 * Track TXID and payouts from wp-admin
 * You can accept payments worldwide without restrictions due to the decentralized nature of how cryptocurrencies work.
 * Please check our website for the minimum transaction amount for each cryptocurrency.
 * Crypto icons on checkout page and QR code.
 * Multi-currency support.
+* Supported networks: BTC - BCH - LTC - doge - ETH - TRC20 - ERC20 - BEP20 - Arbitrum - Polygon - AVAX-C - Optimism - Base - Solana [check the full list of supported coins and minimum order value per coin](https://paygate.to/crypto-payment-gateway-no-kyc-instant-payouts/#minimumorder).
 
 Minimum allowed order amount varies per crypto coin you can [check the full list of supported coins and minimum order value per coin](https://paygate.to/crypto-payment-gateway-no-kyc-instant-payouts/#minimumorder).
 
@@ -66,7 +67,7 @@ Follow the guide to [Fix WooCommerce There Are No Payment Methods Available Erro
 
 = I have a problem with one of my orders? =
 
-Please contact HighRiskShop.com support team to guide you.
+Please contact PayGate.to support team to guide you.
 
 = I'm receiving payments to my wallet but orders are still pending payment? =
 
@@ -81,6 +82,12 @@ Our plugin is tested to mark orders as processing automatically after payment. Y
 5. screenshot-5.png
 
 == Changelog ==
+
+= V1.0.4 =
+
+* Check allowed minimum per coin to prevent customer from sending lower than minimum.
+* Fix deprecated dynamic property PHP 8.2
+* Detailed error messages for checkout blocks.
 
 = V1.0.3 =
 

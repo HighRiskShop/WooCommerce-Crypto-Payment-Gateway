@@ -10,7 +10,11 @@ function init_paygatedottocryptogateway_eth_gateway() {
         return;
     }
 
-class HighRiskShop_Crypto_Payment_Gateway_Eth extends WC_Payment_Gateway {
+class PayGateDotTo_Crypto_Payment_Gateway_Eth extends WC_Payment_Gateway {
+
+protected $eth_wallet_address;
+protected $eth_blockchain_fees;
+protected $icon_url;
 
     public function __construct() {
         $this->id                 = 'paygatedotto-crypto-payment-gateway-eth';
@@ -104,7 +108,7 @@ $paygatedottocryptogateway_eth_response = wp_remote_get('https://api.paygate.to/
 
 if (is_wp_error($paygatedottocryptogateway_eth_response)) {
     // Handle error
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed currency conversion process, please try again', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed currency conversion process, please try again', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 
@@ -116,7 +120,7 @@ if ($paygatedottocryptogateway_eth_conversion_resp && isset($paygatedottocryptog
     $paygatedottocryptogateway_eth_final_total	= sanitize_text_field($paygatedottocryptogateway_eth_conversion_resp['value_coin']);
     $paygatedottocryptogateway_eth_reference_total = (float)$paygatedottocryptogateway_eth_final_total;	
 } else {
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (unsupported store currency)', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (unsupported store currency)', 'crypto-payment-gateway'), 'error');
     return null;
 }	
 		}
@@ -129,7 +133,7 @@ if ($paygatedottocryptogateway_eth_conversion_resp && isset($paygatedottocryptog
 
 if (is_wp_error($paygatedottocryptogateway_eth_feesest_response)) {
     // Handle error
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Failed to get estimated fees, please try again', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Failed to get estimated fees, please try again', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 
@@ -141,7 +145,7 @@ if ($paygatedottocryptogateway_eth_feesest_conversion_resp && isset($paygatedott
     $paygatedottocryptogateway_eth_feesest_final_total = sanitize_text_field($paygatedottocryptogateway_eth_feesest_conversion_resp['estimated_cost_currency']['USD']);
     $paygatedottocryptogateway_eth_feesest_reference_total = (float)$paygatedottocryptogateway_eth_feesest_final_total;	
 } else {
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Failed to get estimated fees, please try again', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Failed to get estimated fees, please try again', 'crypto-payment-gateway'), 'error');
     return null;
 }	
 		}
@@ -152,7 +156,7 @@ $paygatedottocryptogateway_eth_revfeesest_response = wp_remote_get('https://api.
 
 if (is_wp_error($paygatedottocryptogateway_eth_revfeesest_response)) {
     // Handle error
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed currency conversion process, please try again', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed currency conversion process, please try again', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 
@@ -166,7 +170,7 @@ if ($paygatedottocryptogateway_eth_revfeesest_conversion_resp && isset($paygated
 	// Calculating order total after adding the blockchain fees
 	$paygatedottocryptogateway_eth_payin_total = $paygatedottocryptogateway_eth_reference_total + $paygatedottocryptogateway_eth_revfeesest_reference_total;
 } else {
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (unsupported store currency)', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (unsupported store currency)', 'crypto-payment-gateway'), 'error');
     return null;
 }	
 		}
@@ -177,11 +181,29 @@ if ($paygatedottocryptogateway_eth_revfeesest_conversion_resp && isset($paygated
 
 		}
 		
+$paygatedottocryptogateway_eth_response_minimum = wp_remote_get('https://api.paygate.to/crypto/eth/info.php', array('timeout' => 30));
+if (is_wp_error($paygatedottocryptogateway_eth_response_minimum)) {
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed due to failed minimum retrieval process, please try again', 'crypto-payment-gateway'), 'error');
+    return null;
+} else {
+    $paygatedottocryptogateway_eth_body_minimum = wp_remote_retrieve_body($paygatedottocryptogateway_eth_response_minimum);
+    $paygatedottocryptogateway_eth_conversion_resp_minimum = json_decode($paygatedottocryptogateway_eth_body_minimum, true);
+    if ($paygatedottocryptogateway_eth_conversion_resp_minimum && isset($paygatedottocryptogateway_eth_conversion_resp_minimum['minimum'])) {
+        $paygatedottocryptogateway_eth_final_minimum = sanitize_text_field($paygatedottocryptogateway_eth_conversion_resp_minimum['minimum']);
+        if ($paygatedottocryptogateway_eth_payin_total < $paygatedottocryptogateway_eth_final_minimum) {
+            paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed because the coin amount is below the minimum required', 'crypto-payment-gateway'), 'error');
+            return null;
+        }
+    } else {
+        paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (failed to fetch minimum coin amount)', 'crypto-payment-gateway'), 'error');
+        return null;
+    }
+}
 $paygatedottocryptogateway_eth_gen_wallet = wp_remote_get('https://api.paygate.to/crypto/eth/wallet.php?address=' . $this->eth_wallet_address .'&callback=' . urlencode($paygatedottocryptogateway_eth_callback), array('timeout' => 30));
 
 if (is_wp_error($paygatedottocryptogateway_eth_gen_wallet)) {
     // Handle error
-    wc_add_notice(__('Wallet error:', 'crypto-payment-gateway') . __('Payment could not be processed due to incorrect payout wallet settings, please contact website admin', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Wallet error:', 'crypto-payment-gateway') . __('Payment could not be processed due to incorrect payout wallet settings, please contact website admin', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 	$paygatedottocryptogateway_eth_wallet_body = wp_remote_retrieve_body($paygatedottocryptogateway_eth_gen_wallet);
@@ -199,7 +221,7 @@ if (is_wp_error($paygatedottocryptogateway_eth_gen_wallet)) {
 
 if (is_wp_error($paygatedottocryptogateway_eth_genqrcode_response)) {
     // Handle error
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Unable to generate QR code', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Unable to generate QR code', 'crypto-payment-gateway'), 'error');
     return null;
 } else {
 
@@ -211,7 +233,7 @@ if ($paygatedottocryptogateway_eth_genqrcode_conversion_resp && isset($paygatedo
     $paygatedottocryptogateway_eth_genqrcode_pngimg = wp_kses_post($paygatedottocryptogateway_eth_genqrcode_conversion_resp['qr_code']);	
 	
 } else {
-    wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Unable to generate QR code', 'crypto-payment-gateway'), 'error');
+    paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Unable to generate QR code', 'crypto-payment-gateway'), 'error');
     return null;
 }	
 		}
@@ -227,7 +249,7 @@ if ($paygatedottocryptogateway_eth_genqrcode_conversion_resp && isset($paygatedo
 	$order->add_meta_data('paygatedotto_eth_status_nonce', $paygatedottocryptogateway_eth_status_nonce, true);
     $order->save();
     } else {
-        wc_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (wallet address error)', 'crypto-payment-gateway'), 'error');
+        paygatedottocryptogateway_add_notice(__('Payment error:', 'crypto-payment-gateway') . __('Payment could not be processed, please try again (wallet address error)', 'crypto-payment-gateway'), 'error');
 
         return null;
     }
@@ -286,10 +308,13 @@ public function before_thankyou_page($order_id) {
 
 
 
+public function paygatedotto_crypto_payment_gateway_get_icon_url() {
+        return !empty($this->icon) ? esc_url($this->icon) : '';
+    }
 }
 
 function paygatedotto_add_instant_payment_gateway_eth($gateways) {
-    $gateways[] = 'HighRiskShop_Crypto_Payment_Gateway_Eth';
+    $gateways[] = 'PayGateDotTo_Crypto_Payment_Gateway_Eth';
     return $gateways;
 }
 add_filter('woocommerce_payment_gateways', 'paygatedotto_add_instant_payment_gateway_eth');
@@ -371,7 +396,7 @@ function paygatedottocryptogateway_eth_change_order_status_callback( $request ) 
 		
 		// Get the expected amount and coin
 	$paygatedottocryptogateway_ethexpected_amount = $order->get_meta('paygatedotto_eth_payin_amount', true);
-	$paygatedottocryptogateway_ethexpected_coin = $order->get_meta('paygatedotto_eth_payin_amount', true);
+
 	
 		if ( $paygatedottocryptogateway_ethpaid_value_coin < $paygatedottocryptogateway_ethexpected_amount || $paygatedottocryptogateway_eth_paid_coin_name !== 'eth') {
 			// Mark the order as failed and add an order note
