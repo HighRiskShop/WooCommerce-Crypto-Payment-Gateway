@@ -409,8 +409,7 @@ $order->add_order_note(sprintf( __( '[Order Failed] Customer sent %1$s %2$s inst
 		} else {
         // Change order status to processing
 		$order->payment_complete();
-		/* translators: 1: Paid value in coin, 2: Paid coin name, 3: Transaction ID */
-		$order->update_status('processing', sprintf( __( '[Payment completed] Customer sent %1$s %2$s TXID:%3$s', 'crypto-payment-gateway' ), $paygatedottocryptogateway_usdtsolpaid_value_coin, $paygatedottocryptogateway_usdtsol_paid_coin_name, $paygatedottocryptogateway_usdtsol_paid_txid_in));
+
 
 // Return success response
 /* translators: 1: Paid value in coin, 2: Paid coin name, 3: Transaction ID */
