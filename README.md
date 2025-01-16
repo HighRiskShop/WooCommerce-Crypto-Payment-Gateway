@@ -16,3 +16,4 @@ Cryptocurrency Payment Gateway with instant payouts to your wallet and without K
 * Please check our website for the minimum transaction amount for each cryptocurrency.
 * Crypto icons on checkout page and QR code.
 * Multi-currency support.
+* Supported networks: BTC – BCH – LTC – doge – ETH – TRC20 – ERC20 – BEP20 – Arbitrum – Polygon – AVAX-C – Optimism – Base – Solana [check the full list of supported coins and minimum order value per coin](https://paygate.to/crypto-payment-gateway-no-kyc-instant-payouts/#minimumorder).
