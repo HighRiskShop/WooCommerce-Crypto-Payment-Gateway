@@ -8,7 +8,7 @@
  * Requires at least: 5.8
  * Tested up to: 6.7.1
  * WC requires at least: 5.8
- * WC tested up to: 9.5.2
+ * WC tested up to: 9.6.0
  * Requires PHP: 7.2
  * Author: PayGate.to
  * Author URI: https://paygate.to/
