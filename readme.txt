@@ -4,7 +4,7 @@ Donate link: https://paygate.to/
 Tags: woocommerce,payment,crypto,gateway
 Requires at least: 5.8
 Tested up to: 6.7.1
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 Requires PHP: 7.2
 WC requires at least: 5.8
 WC tested up to: 9.5.2
@@ -83,7 +83,11 @@ Our plugin is tested to mark orders as processing automatically after payment. Y
 
 == Changelog ==
 
-== V1.0.5 ==
+= V1.0.6 =
+
+* Added support for TRUMP coin on Solana network.
+
+= V1.0.5 =
 
 * Fix processing order status bug for virtual downloadable products.
 

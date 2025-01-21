@@ -414,7 +414,7 @@ $order->add_order_note(sprintf( __( '[Order Failed] Customer sent %1$s %2$s inst
 // Return success response
 /* translators: 1: Paid value in coin, 2: Paid coin name, 3: Transaction ID */
 $order->add_order_note(sprintf( __( '[Payment completed] Customer sent %1$s %2$s TXID:%3$s', 'crypto-payment-gateway' ), $paygatedottocryptogateway_manapolygonpaid_value_coin, $paygatedottocryptogateway_manapolygon_paid_coin_name, $paygatedottocryptogateway_manapolygon_paid_txid_in));
-        return array( 'message' => 'Order status changed to processing.' );
+        return array( 'message' => 'Payment confirmed and order status changed.' );
 		}
     } else {
         // Return error response if conditions are not met
